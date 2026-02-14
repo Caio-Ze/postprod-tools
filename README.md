@@ -236,4 +236,6 @@ For licensing inquiries, pricing, and demo access:
 
 <p align="center">
   <sub>Built with Rust. Powered by the PTSL protocol. Designed for audio professionals.</sub>
+  <br>
+  <sub>If this is useful to you, a ⭐ on the repo helps others find it.</sub>
 </p>
