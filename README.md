@@ -3,11 +3,12 @@
 </p>
 
 <p align="center">
-  <strong>AI-driven automation for Pro Tools audio post-production</strong>
+  <strong>Workflow automation suite for Pro Tools audio post-production</strong>
 </p>
 
 <p align="center">
-  <a href="#tools">Tools</a> &middot;
+  <a href="#workflow-tools">Workflows</a> &middot;
+  <a href="#agent-tools">Agent Tools</a> &middot;
   <a href="docs/tool-reference.md">Reference</a> &middot;
   <a href="#how-it-works">How It Works</a> &middot;
   <a href="#licensing">Licensing</a>
@@ -17,36 +18,71 @@
 
 ## What is PostProd Tools?
 
-PostProd Tools is a suite of **31 command-line tools** that automate Pro Tools workflows via the PTSL (Pro Tools Scripting Language) protocol. Each tool performs a single, well-defined operation — from importing tracks and spotting clips to bouncing mixes and normalizing loudness.
+PostProd Tools is a suite of **standalone workflow applications** and **31 composable CLI tools** that automate Pro Tools via the PTSL (Pro Tools Scripting Language) gRPC protocol.
 
-They are designed to be composed together, driven by AI agents, or triggered from the [ProTools Studio IDE](https://github.com/Caio-Ze/protools-studio) dashboard.
+The workflow tools handle complete production pipelines — bounce, batch processing, session monitoring, loudness normalization, voiceover QC — running unattended, start to finish. The agent tools provide granular Pro Tools control for AI-driven automation via the [ProTools Studio IDE](https://github.com/Caio-Ze/protools-studio).
 
-**The result:** workflows that used to take a team of editors hours now run in minutes, unattended.
+**The result:** workflows that used to take a team of editors hours now run in minutes. One installation replaces the repetitive work of 3–4 full-time operators.
 
 ## The Problem
 
 Audio post-production studios running Pro Tools face the same bottleneck: highly repetitive, error-prone manual work.
 
-- Importing dozens of tracks from source sessions
-- Renaming, organizing, and consolidating clips
-- Bouncing multiple formats with correct loudness standards
-- Versioning sessions across delivery stages
-- Spotting audio to precise timecode positions
+- Bouncing mixes to multiple formats with correct loudness standards
+- Processing batches of sessions — importing, consolidating, exporting
+- Monitoring session state and triggering scripts in response to changes
+- Importing and spotting SFX, voiceover, and music to precise timecodes
+- Transcribing audio and comparing against reference scripts for QC
+- Versioning and organizing session files across delivery stages
 
 These tasks consume hours of skilled editor time per project. Scaling means hiring more people to do the same repetitive work.
 
-## The Solution
+## Workflow Tools
 
-PostProd Tools replaces manual repetition with deterministic automation:
+These are the core product — complete, standalone applications that handle entire production pipelines.
 
-- **One command** imports all tracks from a source session
-- **One command** bounces and normalizes to broadcast loudness standards (LUFS)
-- **One command** spots audio clips to exact timecode positions
-- **AI agents** chain tools together to handle complete workflows end-to-end
+### Bounce & Delivery
 
-Every tool outputs structured JSON, making them composable with scripts, AI agents, or any automation pipeline.
+| Tool | Description |
+|------|-------------|
+| **Bounce to All** | Configurable multi-format bounce engine. Exports Pro Tools sessions to WAV/MP3/AIFF with format negotiation and delivery folder management |
+| **Audio Normalizer** | EBU R128 loudness normalizer with interactive menu. Presets for broadcast (-23 LUFS), internet (-20 LUFS), and peak maximization. Batch processes entire folders |
+| **Audio Batch Maximize + MP3** | Interactive batch processor — peak normalizes audio and converts to MP3 in one pass. Preserves folder structure, archives originals |
 
-## Tools
+### Batch Processing
+
+| Tool | Description |
+|------|-------------|
+| **Batch Processing Orchestrator** | Master workflow controller with fuzzy-select UI. Discovers sessions in a folder, opens them sequentially, and runs processing pipelines across entire project batches |
+| **TV-to-Spot Workflow** | End-to-end post-production pipeline: imports source tracks, exports and consolidates, normalizes loudness, and spots clips back — fully automated with multi-phase state machine |
+| **SFX Workflow** | Sound effects import pipeline. Maps folder structures to tracks, creates markers from timestamps, imports audio, and spots to timeline. Optional AI metadata extraction |
+
+### Monitoring & QC
+
+| Tool | Description |
+|------|-------------|
+| **Session Monitor** | Real-time TUI that watches Pro Tools for session changes. Triggers configurable scripts on events (playback state, track modifications). TOML-driven automation rules |
+| **Voice-to-Text CLI** | Interactive TUI for voiceover QC. Transcribes session audio via AI, compares against reference scripts, and reports discrepancies. Two-panel interface with auto-detection |
+
+### Import & Spot
+
+| Tool | Description |
+|------|-------------|
+| **Import & Spot Clips** | Finds newest audio in the LOC folder, imports to clip list, and spots to timeline at the correct timecode (OUT marker + offset). Handles the complete voiceover delivery cycle |
+| **WAV/MP3 Converter** | Two-phase batch converter. Handles MP3→WAV and WAV→MP3 (320kbps) with drag-and-drop folder support |
+
+### Utilities
+
+| Tool | Description |
+|------|-------------|
+| **Session Versioning** | Auto-increments session version numbers (V1→V2→V3) and saves via PTSL |
+| **Session Health Check** | Validates Pro Tools has an active session. Quick health check for automation pipelines |
+| **Video Optimizer** | Batch converts MP4/MOV/M4V to lightweight proxy files for reference playback |
+| **Folder Structure Tools** | Create and rename session folder hierarchies following studio naming conventions |
+
+## Agent Tools
+
+27 granular CLI tools for AI-driven automation. Each performs a single operation and returns structured JSON — designed to be composed by AI agents or scripts.
 
 ### Session Management
 | Tool | Description |
@@ -68,93 +104,100 @@ Every tool outputs structured JSON, making them composable with scripts, AI agen
 | `agent-mute-solo` | Mute, unmute, solo, or unsolo tracks |
 | `agent-track-volume` | Set track fader volume in dB |
 
-### Bounce & Export
+### Bounce & Audio
 | Tool | Description |
 |------|-------------|
 | `agent-bounce-export` | Bounce session to WAV or MP3 |
 | `agent-bounce-organize` | Move bounced files to a central delivery folder |
-| `agent-bounce-normalize-tv` | Two-pass loudness normalization (creates broadcast-ready variants) |
+| `agent-bounce-normalize-tv` | Two-pass loudness normalization (broadcast-ready) |
 | `agent-export-loc` | Export and consolidate a track to WAV |
-| `agent-maximize-audio` | Peak-normalize audio to maximize volume |
-| `agent-convert-mp3` | Convert audio files to MP3 |
+| `agent-maximize-audio` | Peak-normalize audio |
+| `agent-convert-mp3` | Convert audio to MP3 |
 | `agent-apply-audio-filter` | Apply FFmpeg audio filter chains |
 
 ### Import & Spot
 | Tool | Description |
 |------|-------------|
-| `agent-import-audio` | Import audio files into the Pro Tools clip list |
-| `agent-spot-clip` | Spot a clip to a track at a precise sample position |
-| `agent-create-markers` | Create session markers from a timestamps file |
-| `agent-copy-markers` | Copy markers from one session to another |
+| `agent-import-audio` | Import audio files into the clip list |
+| `agent-spot-clip` | Spot a clip at a precise sample position |
+| `agent-create-markers` | Create markers from a timestamps file |
+| `agent-copy-markers` | Copy markers between sessions |
 | `agent-version-match` | Find and report versioned tracks |
 
 ### Transcription & QC
 | Tool | Description |
 |------|-------------|
-| `agent-transcribe-audio` | Transcribe audio using AI (Groq Whisper) |
-| `agent-extract-text` | Extract plain text from documents |
-| `agent-compare-texts` | Compare reference script against transcription for QC |
+| `agent-transcribe-audio` | Transcribe audio via AI (Groq Whisper) |
+| `agent-extract-text` | Extract text from documents |
+| `agent-compare-texts` | Compare script against transcription |
 
 ## How It Works
 
 ```
-Pro Tools  <──gRPC──>  PTSL Agent Tools  <──JSON──>  AI Agent / Script / Dashboard
-   │                        │
-   │  PTSL Protocol         │  Structured output
-   │  (localhost:31416)     │  (--output-json)
-   │                        │
-   ▼                        ▼
- Session state         Deterministic results
- Track data            Error reporting
- Transport control     Composable pipelines
+                    ┌──────────────────────────────────────────┐
+                    │         PostProd Tools Suite              │
+                    │                                          │
+                    │  ┌─────────────┐  ┌───────────────────┐  │
+                    │  │  Workflow    │  │   Agent Tools     │  │
+                    │  │  Tools      │  │   (27 CLIs)       │  │
+                    │  │             │  │                   │  │
+                    │  │  Bounce     │  │  JSON in/out      │  │
+                    │  │  Batch Proc │  │  Composable       │  │
+                    │  │  Monitor    │  │  AI-driven        │  │
+                    │  │  QC         │  │                   │  │
+                    │  └──────┬──────┘  └────────┬──────────┘  │
+                    │         │                  │              │
+                    │         └────────┬─────────┘              │
+                    │                  │                        │
+                    └──────────────────┼────────────────────────┘
+                                       │
+                              PTSL gRPC Protocol
+                            (localhost:31416)
+                                       │
+                                       ▼
+                              ┌─────────────────┐
+                              │    Pro Tools     │
+                              │                  │
+                              │  Sessions        │
+                              │  Tracks          │
+                              │  Transport       │
+                              │  Mixer           │
+                              └─────────────────┘
 ```
 
-Each tool:
-1. Connects to Pro Tools via the PTSL gRPC protocol (localhost)
-2. Executes a single, well-defined operation
-3. Returns structured JSON with success/failure status
-4. Exits with appropriate error codes for pipeline integration
+All tools communicate with Pro Tools through the **PTSL gRPC protocol** on localhost. Workflow tools run complete pipelines autonomously. Agent tools provide atomic operations for AI composition.
 
-Tools are designed to be **stateless and composable** — chain them together for complex workflows.
+## Deployment
 
-## Example Workflows
+Tools are distributed as **universal macOS binaries** (Apple Silicon + Intel) organized into runtime folders:
 
-**Import tracks from a source session, solo only what you need:**
-```bash
-agent-import-tracks --output-json --session "$TARGET" --source "$SOURCE"
-agent-mute-solo --output-json --session "$TARGET" solo --tracks "Dialog_01,Dialog_02"
-```
-
-**Bounce and normalize for broadcast delivery:**
-```bash
-agent-bounce-export --output-json --session "$SESSION" --output "$BOUNCE_DIR"
-agent-bounce-normalize-tv --output-json --input "$BOUNCE_DIR/mix.wav"
-```
-
-**Spot audio to a precise timecode position:**
-```bash
-agent-import-audio --output-json --session "$SESSION" --file "$AUDIO_FILE"
-agent-spot-clip --output-json --session "$SESSION" --clip "voiceover_01" --track "VO" --position 48000
-```
+| Folder | Contents |
+|--------|----------|
+| `Bounce/` | Bounce engine, normalizers, format converters, FFmpeg |
+| `Session_Monitor/` | Session monitor, import/spot tools, voice-to-text |
+| `Batch_Processing/` | Batch orchestrator, TV-to-spot workflow, video optimizer |
+| `SFX_Workflow/` | SFX import pipeline, AI metadata extraction |
+| `tools/` | Standalone utilities (session check, versioning, folder ops) |
 
 ## Requirements
 
 - **macOS 12.0+** (Apple Silicon or Intel)
 - **Pro Tools 2025.3+** with PTSL enabled
-- Pro Tools must be running with a session open
-- Network access to `localhost:31416` (PTSL default port)
+- Pro Tools running with a session open
+- Audio tools require **FFmpeg** (bundled)
+- Transcription tools require a **Groq API key**
 
 ## Companion: ProTools Studio IDE
 
-PostProd Tools integrates with [**ProTools Studio**](https://github.com/Caio-Ze/protools-studio), a native macOS audio post-production IDE built on the GPUI framework. The IDE provides:
+PostProd Tools integrates with [**ProTools Studio**](https://github.com/Caio-Ze/protools-studio), a native macOS IDE built on the GPUI framework. The IDE provides:
 
 - A visual dashboard with one-click tool execution
 - AI agent integration for natural-language workflow automation
-- Real-time session monitoring
+- Real-time session monitoring and track visualization
 
 ## Licensing
 
-PostProd Tools is **proprietary commercial software**. The tools are distributed as compiled binaries under a commercial license.
+PostProd Tools is **proprietary commercial software**. All tools are distributed as compiled binaries under a commercial license.
 
 For licensing inquiries, pricing, and demo access:
 
