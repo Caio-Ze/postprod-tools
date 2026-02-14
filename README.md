@@ -145,39 +145,51 @@ These are the core product — complete, standalone applications that handle ent
 
 ## How It Works
 
-```
-                    ┌──────────────────────────────────────────┐
-                    │         PostProd Tools Suite              │
-                    │                                          │
-                    │  ┌─────────────┐  ┌───────────────────┐  │
-                    │  │  Workflow    │  │   Agent Tools     │  │
-                    │  │  Tools      │  │   (27 CLIs)       │  │
-                    │  │             │  │                   │  │
-                    │  │  Bounce     │  │  JSON in/out      │  │
-                    │  │  Batch Proc │  │  Composable       │  │
-                    │  │  Monitor    │  │  AI-driven        │  │
-                    │  │  QC         │  │                   │  │
-                    │  └──────┬──────┘  └────────┬──────────┘  │
-                    │         │                  │              │
-                    │         └────────┬─────────┘              │
-                    │                  │                        │
-                    └──────────────────┼────────────────────────┘
-                                       │
-                              PTSL gRPC Protocol
-                            (localhost:31416)
-                                       │
-                                       ▼
-                              ┌─────────────────┐
-                              │    Pro Tools     │
-                              │                  │
-                              │  Sessions        │
-                              │  Tracks          │
-                              │  Transport       │
-                              │  Mixer           │
-                              └─────────────────┘
+```mermaid
+flowchart TB
+    subgraph USER["🎧 User / Studio"]
+        IDE["ProTools Studio IDE\n(Dashboard + AI Chat)"]
+        SCRIPTS["Custom Scripts\n& Automations"]
+    end
+
+    subgraph PPT["PostProd Tools Suite"]
+        direction LR
+        subgraph WF["Workflow Tools"]
+            BOUNCE["Bounce to All\nMulti-format export"]
+            BATCH["Batch Processing\nMulti-session pipelines"]
+            MONITOR["Session Monitor\nReal-time event triggers"]
+            TVSPOT["TV-to-Spot\nEnd-to-end delivery"]
+            SFX["SFX Workflow\nImport + spot + markers"]
+            NORM["Audio Normalizer\nEBU R128 loudness"]
+            VTT["Voice-to-Text\nTranscription + QC"]
+        end
+        subgraph AT["Agent Tools (27 CLIs)"]
+            SESSION["Session: tracks, clips,\nmarkers, transport"]
+            MIXER["Mixer: volume,\nmute, solo"]
+            AUDIO["Audio: bounce, normalize,\nconvert, filter"]
+            TRANSCRIPT["Transcription:\nWhisper AI + compare"]
+        end
+    end
+
+    subgraph PT["Avid Pro Tools"]
+        ENGINE["Audio Engine"]
+        SESS["Sessions & Tracks"]
+        MIX["Mixer & Faders"]
+        TRANSP["Transport & Timeline"]
+    end
+
+    IDE -->|"one-click / AI prompt"| WF
+    IDE -->|"JSON commands"| AT
+    SCRIPTS -->|"CLI invocation"| WF
+    SCRIPTS -->|"composable pipes"| AT
+
+    WF ==>|"PTSL gRPC\nlocalhost:31416"| PT
+    AT ==>|"PTSL gRPC\nlocalhost:31416"| PT
 ```
 
-All tools communicate with Pro Tools through the **PTSL gRPC protocol** on localhost. Workflow tools run complete pipelines autonomously. Agent tools provide atomic operations for AI composition.
+**Workflow tools** run complete production pipelines autonomously — bounce an entire session, process a batch of 50 sessions, or monitor Pro Tools and trigger scripts on events.
+
+**Agent tools** are atomic building blocks — each does one thing and returns JSON. They are composed by AI agents, the ProTools Studio dashboard, or custom scripts to build any workflow.
 
 ## Deployment
 
