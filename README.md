@@ -16,6 +16,10 @@
 
 ---
 
+> **TL;DR:** A bunch of Rust tools that automate the boring parts of Pro Tools — bouncing, batch processing, loudness normalization, session management. You run them, they talk to Pro Tools via gRPC, and the work that used to take hours gets done in minutes.
+
+---
+
 ## What is PostProd Tools?
 
 PostProd Tools is a suite of **standalone workflow applications** and **31 composable CLI tools** that automate Pro Tools via the PTSL (Pro Tools Scripting Language) gRPC protocol.
