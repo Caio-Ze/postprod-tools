@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="assets/logo.png" alt="PostProd Tools" width="480">
+  <img src="assets/logo.png" alt="PostProd Tools" width="280">
 </p>
 
 <p align="center">
@@ -23,6 +23,18 @@ PostProd Tools is a suite of **standalone workflow applications** and **31 compo
 The workflow tools handle complete production pipelines — bounce, batch processing, session monitoring, loudness normalization, voiceover QC — running unattended, start to finish. The agent tools provide granular Pro Tools control for AI-driven automation via the [ProTools Studio IDE](https://github.com/Caio-Ze/protools-studio).
 
 **The result:** workflows that used to take a team of editors hours now run in minutes. One installation replaces the repetitive work of 3–4 full-time operators.
+
+<p align="center">
+  <img src="assets/dashboard.png" alt="ProTools Studio Dashboard" width="800">
+  <br>
+  <sub>ProTools Studio Dashboard — one-click access to all workflow tools and AI automations</sub>
+</p>
+
+<p align="center">
+  <img src="assets/session-monitor.png" alt="Session Monitor" width="800">
+  <br>
+  <sub>Session Monitor — real-time Pro Tools session tracking with script automation</sub>
+</p>
 
 ## The Problem
 
