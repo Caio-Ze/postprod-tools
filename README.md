@@ -16,22 +16,22 @@
 
 ---
 
-> **TL;DR:** A bunch of Rust tools that automate the boring parts of Pro Tools — bouncing, batch processing, loudness normalization, session management. You run them, they talk to Pro Tools via gRPC, and the work that used to take hours gets done in minutes.
+> **TL;DR:** Rust and Go tools that automate the boring parts of Pro Tools — bouncing, batch processing, loudness normalization, session monitoring. They talk to Pro Tools via gRPC, and the work that used to take hours gets done in minutes.
 
 ---
 
 ## What is PostProd Tools?
 
-PostProd Tools is a suite of **standalone workflow applications** and **31 composable CLI tools** that automate Pro Tools via the PTSL (Pro Tools Scripting Language) gRPC protocol.
+PostProd Tools is a suite of **standalone workflow applications** and **27 composable CLI tools** that automate Pro Tools via the PTSL (Pro Tools Scripting Language) gRPC protocol.
 
-The workflow tools handle complete production pipelines — bounce, batch processing, session monitoring, loudness normalization, voiceover QC — running unattended, start to finish. The agent tools provide granular Pro Tools control for AI-driven automation via the [ProTools Studio IDE](https://github.com/Caio-Ze/protools-studio).
+The workflow tools handle complete production pipelines — bounce, batch processing, session monitoring, loudness normalization, voiceover QC — running unattended, start to finish. The agent tools provide granular Pro Tools control for AI-driven automation via the [PostProd Tools IDE](https://github.com/Caio-Ze/postprod-ide).
 
 **The result:** workflows that used to take a team of editors hours now run in minutes. One installation replaces the repetitive work of 3–4 full-time operators.
 
 <p align="center">
-  <img src="assets/dashboard.png" alt="ProTools Studio Dashboard" width="800">
+  <img src="assets/dashboard.png" alt="PostProd Tools Dashboard" width="800">
   <br>
-  <sub>ProTools Studio Dashboard — one-click access to all workflow tools and AI automations</sub>
+  <sub>PostProd Tools Dashboard — one-click access to all workflow tools and AI automations</sub>
 </p>
 
 <p align="center">
@@ -77,7 +77,7 @@ These are the core product — complete, standalone applications that handle ent
 
 | Tool | Description |
 |------|-------------|
-| **Session Monitor** | Real-time TUI that watches Pro Tools for session changes. Triggers configurable scripts on events (playback state, track modifications). TOML-driven automation rules |
+| **Session Monitor** | Real-time TUI (Go / Bubble Tea) that watches Pro Tools for session changes. 3-row VU meter waveform with clip detection (red/yellow/cyan, 12fps), text-through-waveform overlay, and configurable script triggers on events. TOML-driven automation rules |
 | **Voice-to-Text CLI** | Interactive TUI for voiceover QC. Transcribes session audio via AI, compares against reference scripts, and reports discrepancies. Two-panel interface with auto-detection |
 
 ### Import & Spot
@@ -152,7 +152,7 @@ These are the core product — complete, standalone applications that handle ent
 ```mermaid
 flowchart TB
     subgraph USER["🎧 User / Studio"]
-        IDE["ProTools Studio IDE\n(Dashboard + AI Chat)"]
+        IDE["PostProd Tools IDE\n(Dashboard + AI Chat)"]
         SCRIPTS["Custom Scripts\n& Automations"]
     end
 
@@ -193,11 +193,11 @@ flowchart TB
 
 **Workflow tools** run complete production pipelines autonomously — bounce an entire session, process a batch of 50 sessions, or monitor Pro Tools and trigger scripts on events.
 
-**Agent tools** are atomic building blocks — each does one thing and returns JSON. They are composed by AI agents, the ProTools Studio dashboard, or custom scripts to build any workflow.
+**Agent tools** are atomic building blocks — each does one thing and returns JSON. They are composed by AI agents, the PostProd Tools dashboard, or custom scripts to build any workflow.
 
 ## Deployment
 
-Tools are distributed as **universal macOS binaries** (Apple Silicon + Intel) organized into runtime folders:
+Tools are distributed as **universal macOS binaries** (Apple Silicon + Intel), built in Rust and Go, organized into runtime folders:
 
 | Folder | Contents |
 |--------|----------|
@@ -215,9 +215,9 @@ Tools are distributed as **universal macOS binaries** (Apple Silicon + Intel) or
 - Audio tools require **FFmpeg** (bundled)
 - Transcription tools require a **Groq API key**
 
-## Companion: ProTools Studio IDE
+## Companion: PostProd Tools IDE
 
-PostProd Tools integrates with [**ProTools Studio**](https://github.com/Caio-Ze/protools-studio), a native macOS IDE built on the GPUI framework. The IDE provides:
+PostProd Tools integrates with [**PostProd Tools IDE**](https://github.com/Caio-Ze/postprod-ide), a native macOS IDE built in Rust on the GPUI framework. The IDE provides:
 
 - A visual dashboard with one-click tool execution
 - AI agent integration for natural-language workflow automation
@@ -235,5 +235,5 @@ For licensing inquiries, pricing, and demo access:
 ---
 
 <p align="center">
-  <sub>Built with Rust. Powered by the PTSL protocol. Designed for audio professionals.</sub>
+  <sub>Built with Rust and Go. Powered by the PTSL protocol. Designed for audio professionals.</sub>
 </p>
