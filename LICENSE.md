@@ -26,5 +26,5 @@ THIS SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPL
 
 For licensing inquiries, pricing, and demo access, contact:
 
-- **Email:** caioraphael@me.com
+- **Email:** caio.ze.raphael@gmail.com
 - **GitHub:** [@Caio-Ze](https://github.com/Caio-Ze)

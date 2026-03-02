@@ -201,5 +201,5 @@ PostProd Tools is **proprietary commercial software**. All tools are distributed
 
 For licensing inquiries, pricing, and demo access:
 
-**Email:** [caioraphael@me.com](mailto:caioraphael@me.com)
+**Email:** [caio.ze.raphael@gmail.com](mailto:caio.ze.raphael@gmail.com)
 **GitHub:** [@Caio-Ze](https://github.com/Caio-Ze)
